@@ -26,17 +26,14 @@ function LeftSidebar() {
 
 
       <div className="flex flex-col gap-3">
-        <div className="hover:bg-dark-3 px-4.5 py-3 rounded-lg">
-          <Link href='/pinned' className='flex items-center'>
-            <Image src='/pin.svg' alt='likes icon' width={28} height={28} />
-          </Link>
-        </div>
+        <LeftSidebarItem icon='/pin.svg' navigateToPath="/pinned" />
 
         <div className="hover:bg-dark-3 px-4.5 py-3 rounded-lg">
           <Link href='/menu' className='flex items-center'>
             <Image src='/menu.svg' alt='likes icon' width={28} height={28} />
           </Link>
         </div>
+        {/* <LeftSidebarItem icon='/menu.svg' navigateToPath="/menu" /> */}
       </div>
     </div>
   )

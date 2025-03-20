@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { logIn } from '@/lib/actions/authActions'
 
 function LeftSidebarItem({ icon, navigateToPath, isProtected = true, isUserLoggedIn = false }) {
     const [open, setOpen] = useState(false)
@@ -44,7 +45,7 @@ function LeftSidebarItem({ icon, navigateToPath, isProtected = true, isUserLogge
                     </DialogHeader>
 
                     <DialogFooter>
-                        <Button className="mt-8 p-5 h-full gap-14 bg-dark-4 border-3 border-dark-3 rounded-2xl cursor-pointer">
+                        <Button className="mt-8 p-5 h-full gap-14 bg-dark-4 border-3 border-dark-3 outline-none rounded-2xl cursor-pointer" onClick={logIn}>
                             <Image src="/google-logo.svg" alt='google logo' width={48} height={48} />
 
                             <p className='text-base1-semibold'>Continue with Google</p>
