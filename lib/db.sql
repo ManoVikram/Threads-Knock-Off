@@ -99,3 +99,10 @@ CREATE TABLE IF NOT EXISTS  next_auth.verification_tokens
  
 GRANT ALL ON TABLE next_auth.verification_tokens TO postgres;
 GRANT ALL ON TABLE next_auth.verification_tokens TO service_role;
+
+--
+-- Altering the users table to contain additional info
+--
+ALTER TABLE next_auth.users 
+ADD COLUMN username TEXT UNIQUE, 
+ADD COLUMN bio TEXT;
