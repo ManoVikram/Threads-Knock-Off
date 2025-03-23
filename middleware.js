@@ -3,7 +3,7 @@ import { auth } from './lib/auth';
 
 export async function middleware(request) {
   // Public paths that don't need checks
-  const publicPaths = ['/login', '/update-profile'];
+  const publicPaths = ['/edit-profile'];
   const isPublicPath = publicPaths.some(path =>
     request.nextUrl.pathname === path ||
     request.nextUrl.pathname.startsWith('/_next/')
@@ -16,9 +16,9 @@ export async function middleware(request) {
   const session = await auth();
 
   // If logged in but no username, redirect to update profile
-  if (!session.user.username) {
-    return NextResponse.redirect(new URL('/update-profile', request.url));
-  }
+  if (!session?.user?.username && request.nextUrl.pathname !== '/edit-profile') {
+    return NextResponse.redirect(new URL('/edit-profile', request.url));
+}
 
   return NextResponse.next();
 }
