@@ -10,14 +10,18 @@ import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "@/components/ui/sonner"; // Toast for feedback
-// import { updateUsername } from "@/lib/actions"; // Function to update username in DB
+import { toast } from "sonner"; // Toast for feedback
+import { updateUsername } from '@/lib/actions/userActions'; // Function to update username in DB
+import { Loader2 } from 'lucide-react';
 
 function EditProfileDialogPopup() {
     const { data: session, update } = useSession();
+    
     const pathname = usePathname();
     const router = useRouter();
+
     const [open, setOpen] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
 
     const isNewUser = !session?.user?.username; // Check if user has no username
     const isFromProfilePage = pathname === '/edit-profile' && !isNewUser; // Check if user is coming from profile page
@@ -52,9 +56,13 @@ function EditProfileDialogPopup() {
 
     // Handle form submission
     async function onSubmit(data) {
+        toast({ title: "Success", description: "Username updated successfully!" });
+        // setIsUpdating(true)
+        
         // try {
         //     // Update username in Supabase
         //     const success = await updateUsername(session.user.id, data.username);
+
         //     if (success) {
         //         await update({ username: data.username }); // Update session
         //         toast({ title: "Success", description: "Username updated successfully!" });
@@ -66,6 +74,8 @@ function EditProfileDialogPopup() {
         // } catch (error) {
         //     toast({ title: "Error", description: "Something went wrong!" });
         // }
+
+        // setIsUpdating(false)
     }
 
     return (
@@ -101,7 +111,9 @@ function EditProfileDialogPopup() {
                             </FormItem>
                         )} />
 
-                        <Button type="submit" className="p-6 hover:bg-dark-4 border-3 border-dark-3 outline-none rounded-2xl cursor-pointer">
+                        <Button type="submit" className="p-6 hover:bg-dark-4 border-3 border-dark-3 outline-none rounded-2xl cursor-pointer" disabled={isUpdating}>
+                            {isUpdating && <Loader2 className="animate-spin" />}
+
                             {isNewUser ? "Continue" : "Save Changes"}
                         </Button>
                     </form>
