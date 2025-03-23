@@ -16,7 +16,7 @@ import { Loader2 } from 'lucide-react';
 
 function EditProfileDialogPopup() {
     const { data: session, update } = useSession();
-    
+
     const pathname = usePathname();
     const router = useRouter();
 
@@ -56,70 +56,74 @@ function EditProfileDialogPopup() {
 
     // Handle form submission
     async function onSubmit(data) {
-        toast({ title: "Success", description: "Username updated successfully!" });
-        // setIsUpdating(true)
-        
-        // try {
-        //     // Update username in Supabase
-        //     const success = await updateUsername(session.user.id, data.username);
+        setIsUpdating(true);
 
-        //     if (success) {
-        //         await update({ username: data.username }); // Update session
-        //         toast({ title: "Success", description: "Username updated successfully!" });
-        //         setOpen(false);
-        //         router.push(isFromProfilePage ? '/profile' : '/');
-        //     } else {
-        //         toast({ title: "Error", description: "Failed to update username. Try again." });
-        //     }
-        // } catch (error) {
-        //     toast({ title: "Error", description: "Something went wrong!" });
-        // }
+        try {
+            const success = await updateUsername(session.user.id, data.username);
 
-        // setIsUpdating(false)
+            if (success) {
+                await update({ username: data.username }); // Update session
+
+                toast.success("Success", { description: "Username updated successfully!" });
+
+                router.push(isFromProfilePage ? '/profile' : '/', {
+                    scroll: false, // Prevents scroll jump
+                });
+            } else {
+                toast.error("Error", { description: "Failed to update username. Try again." });
+            }
+        } catch (error) {
+            toast.error("Error", { description: "Something went wrong!" });
+        }
+
+        setIsUpdating(false);
     }
 
+
     return (
-        <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogContent className="sm:max-w-[520px] px-12 py-16 flex flex-col justify-center items-center bg-dark-4 border-none rounded-3xl [&>button]:hidden">
-                <DialogHeader>
-                    <DialogTitle asChild>
-                        <div className="text-heading1-bold text-white text-center">
-                            {isNewUser ? "Create Username" : "Edit Profile"}
-                        </div>
-                    </DialogTitle>
+        <>
+            <Dialog open={open} onOpenChange={handleOpenChange}>
+                <DialogContent className="sm:max-w-[520px] px-12 py-16 flex flex-col justify-center items-center bg-dark-4 border-none rounded-3xl [&>button]:hidden">
+                    <DialogHeader>
+                        <DialogTitle asChild>
+                            <div className="text-heading1-bold text-white text-center">
+                                {isNewUser ? "Create Username" : "Edit Profile"}
+                            </div>
+                        </DialogTitle>
 
-                    <DialogDescription className="text-center">
-                        {isNewUser ? "Choose a unique username to continue." : "Update your profile details."}
-                    </DialogDescription>
-                </DialogHeader>
+                        <DialogDescription className="text-center">
+                            {isNewUser ? "Choose a unique username to continue." : "Update your profile details."}
+                        </DialogDescription>
+                    </DialogHeader>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-5 flex flex-col justify-center items-center">
-                        <FormField control={form.control} name="username" render={({ field }) => (
-                            <FormItem className="w-full">
-                                {/* <FormLabel>Username</FormLabel> */}
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-5 flex flex-col justify-center items-center">
+                            <FormField control={form.control} name="username" render={({ field }) => (
+                                <FormItem className="w-full">
+                                    {/* <FormLabel>Username</FormLabel> */}
 
-                                <FormControl>
-                                    <Input placeholder="Username" {...field} className="w-full text-white px-5 py-6 selection:bg-blue-400 selection:text-black" />
-                                </FormControl>
+                                    <FormControl>
+                                        <Input placeholder="Username" {...field} className="w-full text-white px-5 py-6 selection:bg-blue-400 selection:text-black" />
+                                    </FormControl>
 
-                                {/* <FormDescription>
+                                    {/* <FormDescription>
                                     {isNewUser ? "This will be your unique username." : "You can update your username."}
                                 </FormDescription> */}
 
-                                <FormMessage />
-                            </FormItem>
-                        )} />
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
 
-                        <Button type="submit" className="p-6 hover:bg-dark-4 border-3 border-dark-3 outline-none rounded-2xl cursor-pointer" disabled={isUpdating}>
-                            {isUpdating && <Loader2 className="animate-spin" />}
+                            <Button type="submit" className="p-6 hover:bg-dark-4 border-3 border-dark-3 outline-none rounded-2xl cursor-pointer" disabled={isUpdating}>
+                                {isUpdating && <Loader2 className="animate-spin" />}
 
-                            {isNewUser ? "Continue" : "Save Changes"}
-                        </Button>
-                    </form>
-                </Form>
-            </DialogContent>
-        </Dialog>
+                                {isNewUser ? "Continue" : "Save Changes"}
+                            </Button>
+                        </form>
+                    </Form>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 }
 
