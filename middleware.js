@@ -16,7 +16,7 @@ export async function middleware(request) {
   const session = await auth();
 
   // If logged in but no username, redirect to update profile
-  if (!session?.user?.username && request.nextUrl.pathname !== '/edit-profile') {
+  if (session && !session?.user?.username && request.nextUrl.pathname !== '/edit-profile') {
     return NextResponse.redirect(new URL('/edit-profile', request.url));
 }
 
