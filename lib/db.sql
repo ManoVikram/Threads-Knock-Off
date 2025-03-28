@@ -20,7 +20,7 @@ CREATE TABLE accounts
   id SERIAL,
   "userId" UUID NOT NULL,
   type VARCHAR(255) NOT NULL,
-  provider VARCHAR(255) NOT NULL,
+  provider VARCHAR(255) NOT NULL,   
   "providerAccountId" VARCHAR(255) NOT NULL,
   refresh_token TEXT,
   access_token TEXT,
