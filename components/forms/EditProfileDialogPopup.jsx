@@ -15,6 +15,8 @@ import { updateUsername } from '@/lib/actions/userActions'; // Function to updat
 import { Loader2 } from 'lucide-react';
 
 function EditProfileDialogPopup() {
+    // Using client-side useSession() just to get the 'update' function
+    // 'update' function exposed by NextAuth is still unstable
     const { data: session, update } = useSession();
 
     const pathname = usePathname();
@@ -59,7 +61,7 @@ function EditProfileDialogPopup() {
         setIsUpdating(true);
 
         try {
-            const success = await updateUsername(session.user.id, data.username);
+            const success = await updateUsername(session.user.id, data.username, session.sessionToken);
 
             if (success) {
                 await update({ username: data.username }); // Update session

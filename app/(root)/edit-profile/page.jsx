@@ -12,7 +12,7 @@ async function EditProfilePage() {
     if (session.user.username) redirect("/profile");
 
     return (
-        <SessionProvider>
+        <SessionProvider session={session}>
             <EditProfileDialogPopup />
         </SessionProvider>
     )
