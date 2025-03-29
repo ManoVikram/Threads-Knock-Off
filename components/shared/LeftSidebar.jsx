@@ -2,8 +2,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import LeftSidebarItem from './LeftSidebarItem'
+import { auth } from '@/lib/auth'
 
-function LeftSidebar() {
+async function LeftSidebar() {
+  const session = await auth()
+
   return (
     <div className="leftsidebar">
       <div className='px-4.5 py-3'>
@@ -17,7 +20,7 @@ function LeftSidebar() {
 
         <LeftSidebarItem icon='/search.svg' navigateToPath="/search" isProtected={false} />
 
-        <LeftSidebarItem icon='/add.svg' navigateToPath="/create" />
+        <LeftSidebarItem icon='/add.svg' navigateToPath="/create-post" isUserLoggedIn={!!session} />
 
         <LeftSidebarItem icon='/heart.svg' navigateToPath="/likes" />
 
