@@ -50,6 +50,7 @@ function EditProfileDialogPopup() {
     // Handle closing behavior
     function handleOpenChange(isOpen) {
         if (!isOpen && isNewUser) return; // Prevent closing if first-time user hasn't set a username
+        
         if (!isOpen) {
             router.push(isFromProfilePage ? '/profile' : '/');
         }
@@ -115,7 +116,7 @@ function EditProfileDialogPopup() {
                             </FormItem>
                         )} />
 
-                        <Button type="submit" className="p-6 hover:bg-dark-4 border-3 border-dark-3 outline-none rounded-2xl cursor-pointer" disabled={isUpdating}>
+                        <Button type="submit" className="p-6 hover:bg-dark-4 border-3 border-dark-3 outline-none focus-visible:ring-0 rounded-2xl cursor-pointer" disabled={isUpdating}>
                             {isUpdating && <Loader2 className="animate-spin" />}
 
                             {isNewUser ? "Continue" : "Save Changes"}

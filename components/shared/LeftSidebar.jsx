@@ -36,7 +36,6 @@ async function LeftSidebar() {
             <Image src='/menu.svg' alt='likes icon' width={28} height={28} />
           </Link>
         </div>
-        {/* <LeftSidebarItem icon='/menu.svg' navigateToPath="/menu" /> */}
       </div>
     </div>
   )
