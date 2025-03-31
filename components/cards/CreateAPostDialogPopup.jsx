@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,9 @@ import { useForm } from 'react-hook-form';
 import { Textarea } from '../ui/textarea';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { postThread } from '@/lib/actions/threadActions';
+import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 function CreateAPostDialogPopup() {
     const { data: session } = useSession()
@@ -50,6 +53,20 @@ function CreateAPostDialogPopup() {
     // Handle form submission
     async function onSubmit(data) {
         setIsPosting(true);
+
+        try {
+            const success = await postThread(data.post, session.sessionToken)
+
+            if (success) {
+                toast.success("Success", { description: "Thread created successfully!" });
+
+                router.back();
+            } else {
+                toast.error("Error", { description: "Failed to create a thread. Try again." });
+            }
+        } catch (error) {
+            toast.error("Error", { description: "Something went wrong!" });
+        }
 
         setIsPosting(false);
     }
