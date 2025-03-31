@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,6 @@ function CreateAPostDialogPopup() {
     const [open, setOpen] = useState(false);
     const [isPosting, setIsPosting] = useState(false);
     const [postContent, setPostContent] = useState("");
-    const [previousUrl, setPreviousUrl] = useState("/");
 
     // Schema for form validation
     const FormSchema = z.object({
@@ -33,13 +32,12 @@ function CreateAPostDialogPopup() {
 
     // Open dialog on mount
     useEffect(() => {
-        setPreviousUrl(document.referrer || "/");
         setOpen(true);
     }, []);
 
     function handleOpenChange(isOpen) {
         if (!isOpen) {
-            router.push(previousUrl);
+            router.back()
         }
         setOpen(isOpen);
     }

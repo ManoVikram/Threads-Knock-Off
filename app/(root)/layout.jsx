@@ -13,7 +13,7 @@ export const metadata = {
   description: "Clone of Meta's Threads app",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, modals }) {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -25,6 +25,8 @@ export default function RootLayout({ children }) {
           <section className="main-container">
             <div className="w-full max-w-2xl">
               {children}
+
+              {modals}
               
               <Toaster richColors />
             </div>
