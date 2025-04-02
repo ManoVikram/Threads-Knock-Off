@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { postThread } from '@/lib/actions/threadActions';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import useThreadStore from '@/lib/store/threadStore';
 
 function CreateAPostDialogPopup() {
     const { data: session } = useSession()
@@ -59,6 +60,8 @@ function CreateAPostDialogPopup() {
 
             if (success) {
                 toast.success("Success", { description: "Thread created successfully!" });
+
+                useThreadStore.getState().addThread({ content: data.post });
 
                 router.back();
             } else {
