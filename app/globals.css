@@ -93,6 +93,7 @@
   --color-light-3: #7878a3;
   --color-light-4: #5c5c7b;
   --color-gray-1: #697c89;
+  --color-gray-2: #cccccc;
   --color-glassmorphism: oklch(19.52% 0.004 282.88 / 0.6);
 
   --shadow-count-badge: 0px 0px 6px 2px oklch(80.71% 0.12 68.34 / 0.3);
