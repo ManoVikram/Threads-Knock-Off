@@ -1,8 +1,29 @@
-import React from 'react'
+"use client"
+
+import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
+import { handleThreadLikes } from '@/lib/actions/threadActions'
+import { useSession } from 'next-auth/react'
 
-function ThreadCard({ username, userImage, content, likesCount, commentsCount, retweetsCount }) {
+function ThreadCard({ postID, username, userImage, content, likesCount: initialLikesCount, likedByUser, commentsCount, retweetsCount }) {
+    const { data: session } = useSession()
+
+    const [isLiked, setIsLiked] = useState(likedByUser)
+    const [likesCount, setLikesCount] = useState(initialLikesCount)
+
+    const handleLikeClick = async () => {
+        setIsLiked(prev => !prev);
+        setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
+
+        const success = await handleThreadLikes(postID, session.sessionToken);
+        if (!success) {
+            // rollback on failure
+            setIsLiked(prev => !prev);
+            setLikesCount(prev => isLiked ? prev + 1 : prev - 1);
+        }
+    }
+
     return (
         <>
             <div className="flex flex-row w-full gap-3 px-6 py-3 ">
@@ -22,8 +43,8 @@ function ThreadCard({ username, userImage, content, likesCount, commentsCount, r
                     </p>
 
                     <div className="flex justify-start mt-1 -ml-2">
-                        <Button className="p-2 rounded-full hover:bg-dark-6 cursor-pointer">
-                            <Image src="/heart-gray.svg" alt="like icon" height={20} width={20} />
+                        <Button className="p-2 rounded-full hover:bg-dark-6 cursor-pointer" onClick={handleLikeClick}>
+                            <Image src={isLiked ? "/heart-filled.svg" : "/heart-gray.svg"} alt="like icon" height={20} width={20} />
                             {likesCount > 0 && (
                                 <p className='text-subtle-medium text-gray-2'>
                                     {likesCount}
