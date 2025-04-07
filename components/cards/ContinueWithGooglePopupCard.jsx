@@ -4,7 +4,7 @@ import { Button } from '../ui/button'
 import Image from 'next/image'
 import { logIn } from '@/lib/actions/authActions'
 
-function ContinueWithGooglePopupCard({ handleOnClick }) {
+function ContinueWithGooglePopupCard({ handleOnClick = () => { } }) {
     return (
         <DialogContent className="sm:max-w-[520px] px-12 py-16 flex flex-col justify-center items-center bg-dark-4 border-none rounded-3xl [&>button]:hidden">
             <DialogHeader>

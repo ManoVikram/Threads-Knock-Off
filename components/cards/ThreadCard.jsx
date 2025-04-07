@@ -5,14 +5,21 @@ import { Button } from '../ui/button'
 import Image from 'next/image'
 import { handleThreadLikes } from '@/lib/actions/threadActions'
 import { useSession } from 'next-auth/react'
+import useLoginPopupStore from '@/lib/store/loginPopupStore'
 
 function ThreadCard({ postID, username, userImage, content, likesCount: initialLikesCount, likedByUser, commentsCount, retweetsCount }) {
     const { data: session } = useSession()
+    const { setShowLoginPopup } = useLoginPopupStore()
 
     const [isLiked, setIsLiked] = useState(likedByUser)
     const [likesCount, setLikesCount] = useState(initialLikesCount)
 
     const handleLikeClick = async () => {
+        if (!session) {
+            setShowLoginPopup(true)
+            return
+        }
+
         setIsLiked(prev => !prev);
         setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
 
