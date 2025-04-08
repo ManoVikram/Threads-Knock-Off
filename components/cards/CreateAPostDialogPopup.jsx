@@ -16,7 +16,7 @@ import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import useThreadStore from '@/lib/store/threadStore';
 
-function CreateAPostDialogPopup() {
+function CreateAPostDialogPopup({ isAComment = false }) {
     const { data: session } = useSession()
     const router = useRouter()
 
@@ -91,7 +91,7 @@ function CreateAPostDialogPopup() {
                             <FormField control={form.control} name="post" render={({ field }) => (
                                 <FormItem className="w-full">
                                     <FormControl>
-                                        <Textarea placeholder="What's happenning?" {...field} value={postContent} onChange={(event) => {
+                                        <Textarea placeholder={isAComment ? "Post your reply" : "What's happenning?"} {...field} value={postContent} onChange={(event) => {
                                             field.onChange(event)
                                             handleTextareaChange(event)
                                         }} className={`w-full min-h-36 max-h-60 h-[${Math.max(48, postContent.split('\n').length * 24)}px] text-white border-none outline-none ring-0 focus-visible:ring-0 focus-visible:border-none selection:bg-blue-400 selection:text-black`} />
@@ -108,7 +108,7 @@ function CreateAPostDialogPopup() {
                         <Button type="submit" className="p-6 hover:bg-dark-4 border-3 border-dark-3 outline-none rounded-2xl cursor-pointer" disabled={isPosting}>
                             {isPosting && <Loader2 className="animate-spin" />}
 
-                            <p>Post</p>
+                            <p>{isAComment ? "Reply" : "Post"}</p>
                         </Button>
                     </form>
                 </Form>

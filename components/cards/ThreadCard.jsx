@@ -3,16 +3,20 @@
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
-import { handleThreadLikes } from '@/lib/actions/threadActions'
+import { handleThreadComment, handleThreadLikes } from '@/lib/actions/threadActions'
 import { useSession } from 'next-auth/react'
 import useLoginPopupStore from '@/lib/store/loginPopupStore'
+import useCreatePostPopupStore from '@/lib/store/createPostPopupStore'
 
-function ThreadCard({ postID, username, userImage, content, likesCount: initialLikesCount, likedByUser, commentsCount, retweetsCount }) {
+function ThreadCard({ postID, username, userImage, content, likesCount: initialLikesCount, commentsCount: initialCommentsCount, retweetsCount: initialRetweetsCount, likedByUser }) {
     const { data: session } = useSession()
     const { setShowLoginPopup } = useLoginPopupStore()
+    const { setShowCreatePostPopup } = useCreatePostPopupStore()
 
     const [isLiked, setIsLiked] = useState(likedByUser)
     const [likesCount, setLikesCount] = useState(initialLikesCount)
+    const [commentsCount, setCommentsCount] = useState(initialCommentsCount)
+    const [retweetsCount, setRetweetsCount] = useState(initialRetweetsCount)
 
     const handleLikeClick = async () => {
         if (!session) {
@@ -30,6 +34,23 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
             setLikesCount(prev => isLiked ? prev + 1 : prev - 1);
         }
     }
+
+    const handleCommentClick = async () => {
+        if (!session) {
+            setShowLoginPopup(true);
+            return;
+        }
+
+        setShowCreatePostPopup(true);
+        setCommentsCount(prev => prev + 1);
+
+        const success = await handleThreadComment(postID, session.sessionToken);
+        if (!success) {
+            // rollback on failure
+            setCommentsCount(prev => prev - 1);
+        }
+    }
+
 
     return (
         <>
@@ -59,7 +80,7 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
                             )}
                         </Button>
 
-                        <Button className="p-2 rounded-full hover:bg-dark-6 cursor-pointer">
+                        <Button className="p-2 rounded-full hover:bg-dark-6 cursor-pointer" onClick={handleCommentClick}>
                             <Image src="/reply.svg" alt="comment icon" height={20} width={20} />
                             {commentsCount > 0 && (
                                 <p className='text-subtle-medium text-gray-2'>
