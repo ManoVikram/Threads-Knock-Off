@@ -1,7 +1,7 @@
 import React from 'react'
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import CreateAPostDialogPopup from '@/components/cards/CreateAPostDialogPopup';
+import CreateAPostDialogPopup from '@/components/forms/CreateAPostDialogPopup';
 import { SessionProvider } from 'next-auth/react';
 
 async function CreatePostPage() {

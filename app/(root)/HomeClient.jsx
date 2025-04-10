@@ -1,7 +1,7 @@
 "use client"
 
 import ContinueWithGooglePopupCard from '@/components/cards/ContinueWithGooglePopupCard'
-import CreateAPostDialogPopup from '@/components/cards/CreateAPostDialogPopup'
+import CreateAPostDialogPopup from '@/components/forms/CreateAPostDialogPopup'
 import ThreadCard from '@/components/cards/ThreadCard'
 import { Dialog } from '@/components/ui/dialog'
 import { getAllThreads } from '@/lib/actions/threadActions'
@@ -16,7 +16,7 @@ function HomeClient() {
 
     const { threads, setThreads } = useThreadStore();
     const { showLoginPopup, setShowLoginPopup } = useLoginPopupStore()
-    const { showCreatePostPopup } = useCreatePostPopupStore()
+    const { showCreatePostPopup, parentThreadID } = useCreatePostPopupStore()
 
     useEffect(() => {
         async function fetchThreads() {
@@ -42,7 +42,7 @@ function HomeClient() {
                 </Dialog>
             )}
 
-            {showCreatePostPopup && <CreateAPostDialogPopup isAComment />}
+            {showCreatePostPopup && <CreateAPostDialogPopup parentThread={threads.find(thread => thread?.id === parentThreadID)} isAComment />}
         </>
     )
 }
