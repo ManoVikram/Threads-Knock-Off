@@ -11,7 +11,7 @@ import useCreatePostPopupStore from '@/lib/store/createPostPopupStore'
 function ThreadCard({ postID, username, userImage, content, likesCount: initialLikesCount, commentsCount: initialCommentsCount, retweetsCount: initialRetweetsCount, likedByUser }) {
     const { data: session } = useSession()
     const { setShowLoginPopup } = useLoginPopupStore()
-    const { setShowCreatePostPopup } = useCreatePostPopupStore()
+    const { setShowCreatePostPopup, setParentThreadID } = useCreatePostPopupStore()
 
     const [isLiked, setIsLiked] = useState(likedByUser)
     const [likesCount, setLikesCount] = useState(initialLikesCount)
@@ -42,6 +42,7 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
         }
 
         setShowCreatePostPopup(true);
+        setParentThreadID(postID)
         setCommentsCount(prev => prev + 1);
 
         const success = await handleThreadComment(postID, session.sessionToken);

@@ -85,17 +85,19 @@ function CreateAPostDialogPopup({ parentThread = null, isAComment = false }) {
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 flex flex-col justify-center items-stretch">
-                        <div className="flex gap-6.5 w-full">
-                            <div className="flex flex-col justify-start items-center gap-4">
-                                <Image src={parentThread?.user?.image} alt='user profile image' height={36} width={36} className='h-9 w-9 rounded-full object-fill' />
+                        {isAComment && (
+                            <div className="flex gap-6.5 w-full">
+                                <div className="flex flex-col justify-start items-center gap-4">
+                                    <Image src={parentThread?.user?.image} alt='user profile image' height={36} width={36} className='h-9 w-9 rounded-full object-fill' />
 
-                                <span className='w-0.5 h-full bg-dark-6' />
+                                    <span className='w-0.5 h-full bg-dark-6' />
+                                </div>
+
+                                <p className='whitespace-pre-line text-white'>
+                                    {parentThread?.content}
+                                </p>
                             </div>
-
-                            <p className='whitespace-pre-line text-white'>
-                                {parentThread?.content}
-                            </p>
-                        </div>
+                        )}
 
                         <div className="flex gap-3 w-full">
                             <Image src={session.user.image} alt='user profile image' height={36} width={36} className='h-9 w-9 rounded-full object-fill' />
