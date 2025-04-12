@@ -93,9 +93,15 @@ function CreateAPostDialogPopup({ parentThread = null, isAComment = false }) {
                                     <span className='w-0.5 h-full bg-dark-6' />
                                 </div>
 
-                                <p className='whitespace-pre-line text-white'>
-                                    {parentThread?.content}
-                                </p>
+                                <div className="flex flex-col w-full gap-2">
+                                    <p className='font-medium text-white'>{parentThread?.user?.username}</p>
+
+                                    <p className='whitespace-pre-line text-white'>
+                                        {parentThread?.content}
+                                    </p>
+
+                                    <p className='text-dark-5'>Replying to <span className='text-blue-700'>@{parentThread?.user?.username}</span></p>
+                                </div>
                             </div>
                         )}
 
