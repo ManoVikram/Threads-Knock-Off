@@ -41,8 +41,6 @@ function HomeClient() {
                     <ContinueWithGooglePopupCard />
                 </Dialog>
             )}
-
-            {showCreatePostPopup && <CreateAPostDialogPopup parentThread={threads.find(thread => thread?.id === parentThreadID)} isAComment />}
         </>
     )
 }

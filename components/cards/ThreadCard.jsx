@@ -3,15 +3,19 @@
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
-import { handleThreadComment, handleThreadLikes } from '@/lib/actions/threadActions'
+import { handleThreadLikes } from '@/lib/actions/threadActions'
 import { useSession } from 'next-auth/react'
 import useLoginPopupStore from '@/lib/store/loginPopupStore'
 import useCreatePostPopupStore from '@/lib/store/createPostPopupStore'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 function ThreadCard({ postID, username, userImage, content, likesCount: initialLikesCount, commentsCount: initialCommentsCount, retweetsCount: initialRetweetsCount, likedByUser }) {
     const { data: session } = useSession()
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
     const { setShowLoginPopup } = useLoginPopupStore()
-    const { setShowCreatePostPopup, setParentThreadID } = useCreatePostPopupStore()
+    const { setParentThreadID } = useCreatePostPopupStore()
 
     const [isLiked, setIsLiked] = useState(likedByUser)
     const [likesCount, setLikesCount] = useState(initialLikesCount)
@@ -41,15 +45,12 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
             return;
         }
 
-        setShowCreatePostPopup(true);
         setParentThreadID(postID)
-        setCommentsCount(prev => prev + 1);
 
-        const success = await handleThreadComment(postID, session.sessionToken);
-        if (!success) {
-            // rollback on failure
-            setCommentsCount(prev => prev - 1);
-        }
+        const replyPostParams = new URLSearchParams(searchParams)
+        replyPostParams.set("parentThreadID", postID)
+
+        router.push(`/create-post?${replyPostParams.toString()}`)
     }
 
 

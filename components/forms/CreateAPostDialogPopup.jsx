@@ -16,9 +16,12 @@ import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import useThreadStore from '@/lib/store/threadStore';
 
-function CreateAPostDialogPopup({ parentThread = null, isAComment = false }) {
+function CreateAPostDialogPopup({ parentThreadID = null, isAComment = false }) {
     const { data: session } = useSession()
     const router = useRouter()
+
+    const { threads } = useThreadStore()
+    const parentThread = threads.find(thread => thread?.id === parentThreadID)
 
     const [open, setOpen] = useState(false);
     const [isPosting, setIsPosting] = useState(false);
