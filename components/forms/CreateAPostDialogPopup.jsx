@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { Textarea } from '../ui/textarea';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { postThread } from '@/lib/actions/threadActions';
+import { postThread, postThreadComment } from '@/lib/actions/threadActions';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import useThreadStore from '@/lib/store/threadStore';
@@ -59,16 +59,30 @@ function CreateAPostDialogPopup({ parentThreadID = null, isAComment = false }) {
         setIsPosting(true);
 
         try {
-            const success = await postThread(data.post, session.sessionToken)
+            if (!isAComment) {
+                const success = await postThread(data.post, session.sessionToken)
 
-            if (success) {
-                toast.success("Success", { description: "Thread created successfully!" });
+                if (success) {
+                    toast.success("Success", { description: "Thread created successfully!" });
 
-                useThreadStore.getState().addThread({ content: data.post });
+                    useThreadStore.getState().addThread({ content: data.post });
 
-                router.back();
+                    router.back();
+                } else {
+                    toast.error("Error", { description: "Failed to create a thread. Try again." });
+                }
             } else {
-                toast.error("Error", { description: "Failed to create a thread. Try again." });
+                const success = await postThreadComment(data.post, parentThreadID, session.sessionToken)
+
+                if (success) {
+                    toast.success("Success", { description: "Replied to thread successfully!" });
+
+                    useThreadStore.getState().addThread({ content: data.post });
+
+                    router.back();
+                } else {
+                    toast.error("Error", { description: "Failed to reply to the thread. Try again." });
+                }
             }
         } catch (error) {
             toast.error("Error", { description: "Something went wrong!" });
