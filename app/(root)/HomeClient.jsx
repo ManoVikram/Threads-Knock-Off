@@ -30,8 +30,8 @@ function HomeClient() {
     return (
         <>
             <main className='flex flex-col bg-dark-3 rounded-t-3xl mb-9'>
-                {threads.map((thread) => (
-                    <ThreadCard key={thread?.id} postID={thread?.id} username={thread?.user?.username} userImage={thread?.user?.image} content={thread?.content} likesCount={thread?.likes_count} commentsCount={thread?.comments_count} retweetsCount={thread?.retweets_count} likedByUser={thread?.liked_by_user} />
+                {threads.map((thread, index) => (
+                    <ThreadCard key={thread?.id} postID={thread?.id} username={thread?.user?.username} userImage={thread?.user?.image} content={thread?.content} likesCount={thread?.likes_count} commentsCount={thread?.comments_count} retweetsCount={thread?.retweets_count} likedByUser={thread?.liked_by_user} isOnTop={index === 0} />
                 ))}
             </main>
 

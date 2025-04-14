@@ -9,7 +9,7 @@ import useLoginPopupStore from '@/lib/store/loginPopupStore'
 import useCreatePostPopupStore from '@/lib/store/createPostPopupStore'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-function ThreadCard({ postID, username, userImage, content, likesCount: initialLikesCount, commentsCount: initialCommentsCount, retweetsCount: initialRetweetsCount, likedByUser }) {
+function ThreadCard({ postID, username, userImage, content, likesCount: initialLikesCount, commentsCount: initialCommentsCount, retweetsCount: initialRetweetsCount, likedByUser, isOnTop = false }) {
     const { data: session } = useSession()
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -56,7 +56,7 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
 
     return (
         <>
-            <div className="flex flex-row w-full gap-3 px-6 py-3 ">
+            <div className={`flex flex-row w-full gap-3 px-6 py-3 ${isOnTop && "hover:rounded-t-3xl"} hover:bg-dark-6 cursor-pointer`} onClick={() => { }}>
                 <Image src={userImage} alt='user profile image' height={36} width={36} className='h-9 w-9 rounded-full object-fill' />
 
                 <div className="flex flex-col w-full">
