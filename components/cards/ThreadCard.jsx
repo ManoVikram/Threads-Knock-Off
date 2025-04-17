@@ -23,7 +23,9 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
     const [commentsCount, setCommentsCount] = useState(initialCommentsCount)
     const [retweetsCount, setRetweetsCount] = useState(initialRetweetsCount)
 
-    const handleLikeClick = async () => {
+    const handleLikeClick = async (event) => {
+        event.stopPropagation();
+
         if (!session) {
             setShowLoginPopup(true)
             return
@@ -40,7 +42,9 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
         }
     }
 
-    const handleCommentClick = async () => {
+    const handleCommentClick = async (event) => {
+        event.stopPropagation();
+
         if (!session) {
             setShowLoginPopup(true);
             return;
@@ -60,7 +64,7 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
 
     return (
         <>
-            <div className={`flex flex-row w-full gap-3 px-6 pt-6 py-2 ${isOnTop && "hover:rounded-t-3xl"} cursor-pointer`} onClick={handleThreadOpenClick}>
+            <div className={`flex flex-row w-full gap-3 px-6 pt-6 py-2 ${isOnTop && "hover:rounded-t-3xl"} cursor-pointer`} onClick={(event) => handleThreadOpenClick(event)}>
                 <Image src={userImage} alt='user profile image' height={36} width={36} className='h-9 w-9 rounded-full object-fill' />
 
                 <div className="flex flex-col w-full">
@@ -81,7 +85,7 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
                     </p>
 
                     <div className="flex justify-start mt-1 -ml-2">
-                        <Button className="p-2 rounded-full hover:bg-dark-6 cursor-pointer" onClick={handleLikeClick}>
+                        <Button className="p-2 rounded-full hover:bg-dark-6 cursor-pointer" onClick={(event) => handleLikeClick(event)}>
                             <Image src={isLiked ? "/heart-filled.svg" : "/heart-gray.svg"} alt="like icon" height={20} width={20} />
                             {likesCount > 0 && (
                                 <p className='text-subtle-medium text-gray-2'>
@@ -90,7 +94,7 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
                             )}
                         </Button>
 
-                        <Button className="p-2 rounded-full hover:bg-dark-6 cursor-pointer" onClick={handleCommentClick}>
+                        <Button className="p-2 rounded-full hover:bg-dark-6 cursor-pointer" onClick={(event) => handleCommentClick(event)}>
                             <Image src="/reply.svg" alt="comment icon" height={20} width={20} />
                             {commentsCount > 0 && (
                                 <p className='text-subtle-medium text-gray-2'>
