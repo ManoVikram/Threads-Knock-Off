@@ -17,7 +17,7 @@ async function ThreadPage({ params }) {
                 <ThreadCard postID={thread?.id} username={thread?.user?.username} userImage={thread?.user?.image} content={thread?.content} likesCount={thread?.likes_count} commentsCount={thread?.comments_count} retweetsCount={thread?.retweets_count} likedByUser={thread?.liked_by_user} createdAt={thread?.created_at} isOnTop />
 
                 {thread?.comments?.map((comment) => (
-                    <ThreadCard postID={comment?.id} username={comment?.user?.username} userImage={comment?.user?.image} content={comment?.content} likesCount={comment?.likes_count} commentsCount={comment?.comments_count} retweetsCount={comment?.retweets_count} likedByUser={comment?.liked_by_user} createdAt={comment?.created_at} />
+                    <ThreadCard key={comment?.id} postID={comment?.id} username={comment?.user?.username} userImage={comment?.user?.image} content={comment?.content} likesCount={comment?.likes_count} commentsCount={comment?.comments_count} retweetsCount={comment?.retweets_count} likedByUser={comment?.liked_by_user} createdAt={comment?.created_at} />
                 ))}
             </div>
         </SessionProvider>
