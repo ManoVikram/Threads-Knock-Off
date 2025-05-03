@@ -36,11 +36,11 @@ function SearchComponent() {
 
             {isLoading && <Loader2 className="animate-spin text-white mt-20" />}
 
-            {searchResults?.posts?.slice(0, 5)?.map((post) => (
-                <ThreadCard key={post.id} postID={post.id} username={post.user.id} userImage={post.user.image} content={post.content} createdAt={post.created_at} />
+            {!isLoading && searchResults?.posts?.slice(0, 5)?.map((post) => (
+                <ThreadCard key={post.id} postID={post.id} username={post.user.username} userImage={post.user.image} content={post.content} createdAt={post.created_at} />
             ))}
 
-            {searchResults?.users?.slice(0, 5)?.map((user) => (
+            {!isLoading && searchResults?.users?.slice(0, 5)?.map((user) => (
                 <div key={user.id} className="flex flex-row w-full gap-3 px-6 pt-6 py-2 cursor-pointer">
                     <Image src={user.image} alt='user-image' height={36} width={36} className='h-9 w-9 rounded-full object-fill' />
 
