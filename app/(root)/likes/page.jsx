@@ -1,8 +1,15 @@
+import { auth } from '@/lib/auth'
+import { SessionProvider } from 'next-auth/react'
 import React from 'react'
+import LikesClient from './LikesClient'
 
-function LikesPage() {
+async function LikesPage() {
+  const session = await auth()
+
   return (
-    <div>LikesPage</div>
+    <SessionProvider session={session}>
+      <LikesClient />
+    </SessionProvider>
   )
 }
 

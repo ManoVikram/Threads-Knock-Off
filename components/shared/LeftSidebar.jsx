@@ -22,11 +22,10 @@ async function LeftSidebar() {
 
         <LeftSidebarItem icon='/add.svg' navigateToPath="/create-post" isUserLoggedIn={!!session} />
 
-        <LeftSidebarItem icon='/heart.svg' navigateToPath="/likes" />
+        <LeftSidebarItem icon='/heart.svg' navigateToPath="/likes" isUserLoggedIn={!!session} />
 
-        <LeftSidebarItem icon='/user.svg' navigateToPath="/profile" />
+        <LeftSidebarItem icon='/user.svg' navigateToPath="/profile" isUserLoggedIn={!!session} />
       </div>
-
 
       <div className="flex flex-col gap-3">
         <LeftSidebarItem icon='/pin.svg' navigateToPath="/pinned" />
