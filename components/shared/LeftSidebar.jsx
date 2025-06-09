@@ -24,7 +24,7 @@ async function LeftSidebar() {
 
         <LeftSidebarItem icon='/heart.svg' navigateToPath="/likes" isUserLoggedIn={!!session} />
 
-        <LeftSidebarItem icon='/user.svg' navigateToPath="/profile" isUserLoggedIn={!!session} />
+        <LeftSidebarItem icon='/user.svg' navigateToPath={`/${session?.user?.username}`} isUserLoggedIn={!!session} />
       </div>
 
       <div className="flex flex-col gap-3">
