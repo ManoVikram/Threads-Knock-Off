@@ -4,6 +4,7 @@ import ThreadCard from '@/components/cards/ThreadCard'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getUserThreadsAndReplies } from '@/lib/actions/threadActions'
+import { getUserDetails } from '@/lib/actions/userActions'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -15,6 +16,7 @@ function ProfileClient({ username }) {
         "posts": [],
         "replies": []
     })
+    const [userData, setUserData] = useState({})
 
     useEffect(() => {
         async function fetchUserThreadsAndReplies() {
@@ -24,7 +26,15 @@ function ProfileClient({ username }) {
             setPostsAndReplies(userPostsAndReplies)
         }
 
+        async function fetchUserData() {
+            var userDataResponse = await getUserDetails({ username })
+            console.log(userDataResponse);
+
+            setUserData(userDataResponse)
+        }
+
         fetchUserThreadsAndReplies()
+        fetchUserData()
     }, [username, session])
 
     console.log('🔵 About to return JSX')
@@ -35,21 +45,21 @@ function ProfileClient({ username }) {
             <section className='mx-6 my-4 flex flex-col gap-3'>
                 <div className="flex flex-row justify-between items-center">
                     <div className="flex flex-col">
-                        <p className='text-[24px] text-white font-bold'>Mark Zuckerberg</p>
+                        <p className='text-[24px] text-white font-bold'>{userData?.name}</p>
 
-                        <p className='text-gray-2'>zuck</p>
+                        <p className='text-gray-2'>{username}</p>
                     </div>
 
-                    <Image src='/dummy_user.jpg' alt='user-profile-picture' width={84} height={84} className='rounded-full' />
+                    <Image src={userData?.image} alt='user-profile-picture' width={84} height={84} className='rounded-full' />
                 </div>
 
-                <p className='font-light'>Just a guy with a llama</p>
+                <p className='font-light'>{userData?.bio}</p>
 
-                <p className='text-[14px] text-gray-500 font-light'>4.6M followers</p>
+                <p className='text-[14px] text-gray-500 font-light'>{userData?.follower_count} followers</p>
 
                 <div className="flex flex-row justify-evenly gap-3">
-                    <Button className='bg-white text-dark-3 rounded-xl flex-1'>Follow</Button>
-                    <Button className='border-gray-1 border-1 text-white rounded-xl flex-1'>Message</Button>
+                    <Button className='bg-white text-dark-3 rounded-xl flex-1 hover:text-white hover:border-1 hover:border-gray-1 hover:cursor-pointer'>Follow</Button>
+                    <Button className='border-gray-1 border-1 text-white rounded-xl flex-1 hover:cursor-pointer'>Message</Button>
                 </div>
             </section>
 
