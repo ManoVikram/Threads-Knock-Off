@@ -62,15 +62,20 @@ function ThreadCard({ postID, username, userImage, content, likesCount: initialL
         router.push(`/post/${postID}`)
     }
 
+    const handleProfileOpenClick = (event) => {
+        event.stopPropagation()
+        router.push(`/${username}`)
+    }
+
     return (
         <>
             <div className={`flex flex-row w-full gap-3 px-6 pt-6 py-2 ${isOnTop && "hover:rounded-t-3xl"} cursor-pointer`} onClick={(event) => handleThreadOpenClick(event)}>
-                <Image src={userImage} alt='user profile image' height={36} width={36} className='h-9 w-9 rounded-full object-fill' />
+                <Image src={userImage} alt='user profile image' height={36} width={36} className='h-9 w-9 rounded-full object-fill' onClick={handleProfileOpenClick} />
 
                 <div className="flex flex-col w-full">
                     <div className="flex flex-row w-full justify-between items-start">
                         <div className="flex flex-row gap-3 items-center">
-                            <p className='font-medium text-white'>{username}</p>
+                            <p className='font-medium text-white' onClick={handleProfileOpenClick}>{username}</p>
 
                             <p className="text-small-regular font-light text-gray-1">{timeAgo(createdAt)}</p>
                         </div>

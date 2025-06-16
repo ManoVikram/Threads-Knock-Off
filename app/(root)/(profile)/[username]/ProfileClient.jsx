@@ -37,8 +37,6 @@ function ProfileClient({ username }) {
         fetchUserData()
     }, [username, session])
 
-    console.log('🔵 About to return JSX')
-
     return (
         <main className='flex flex-col bg-dark-3 rounded-t-3xl mb-9 text-gray-2'>
             {/* User details section */}
