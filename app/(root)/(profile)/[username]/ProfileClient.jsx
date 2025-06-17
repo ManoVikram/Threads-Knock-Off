@@ -4,10 +4,11 @@ import ThreadCard from '@/components/cards/ThreadCard'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getUserThreadsAndReplies } from '@/lib/actions/threadActions'
-import { getUserDetails } from '@/lib/actions/userActions'
+import { getUserDetails, toggleFollow } from '@/lib/actions/userActions'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
+import { set } from 'zod'
 
 function ProfileClient({ username }) {
     const { data: session } = useSession()
@@ -17,6 +18,7 @@ function ProfileClient({ username }) {
         "replies": []
     })
     const [userData, setUserData] = useState({})
+    const [isFollowing, setIsFollowing] = useState(false)
 
     useEffect(() => {
         async function fetchUserThreadsAndReplies() {
@@ -30,12 +32,30 @@ function ProfileClient({ username }) {
             var userDataResponse = await getUserDetails({ username })
             console.log(userDataResponse);
 
+            setIsFollowing(userDataResponse?.is_following)
             setUserData(userDataResponse)
         }
 
         fetchUserThreadsAndReplies()
         fetchUserData()
     }, [username, session])
+
+    async function handleFollowToggle() {
+        try {
+            var isFollowingTheUser = await toggleFollow(username, session?.sessionToken)
+            console.log("isFollowingTheUser");
+            console.log(isFollowingTheUser);
+            
+            
+            if (isFollowingTheUser) {
+                setIsFollowing(true)
+            } else {
+                setIsFollowing(false)
+            }
+        } catch (error) {
+            console.error("Error toggling follow:", error);
+        }
+    }
 
     return (
         <main className='flex flex-col bg-dark-3 rounded-t-3xl mb-9 text-gray-2'>
@@ -56,7 +76,8 @@ function ProfileClient({ username }) {
                 <p className='text-[14px] text-gray-500 font-light'>{userData?.follower_count} followers</p>
 
                 <div className="flex flex-row justify-evenly gap-3">
-                    <Button className='bg-white text-dark-3 rounded-xl flex-1 hover:text-white hover:border-1 hover:border-gray-1 hover:cursor-pointer'>Follow</Button>
+                    <Button className={`bg-white text-dark-3 rounded-xl flex-1 ${isFollowing ? "bg-transparent text-white border-1 border-gray-1" : ""} hover:text-white hover:border-1 hover:border-gray-1 hover:cursor-pointer`} onClick={handleFollowToggle}>{isFollowing ? "Following" : "Follow"}</Button>
+                    
                     <Button className='border-gray-1 border-1 text-white rounded-xl flex-1 hover:cursor-pointer'>Message</Button>
                 </div>
             </section>
